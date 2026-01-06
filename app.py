@@ -18,10 +18,13 @@ st.caption("Turning churn predictions into profitable retention decisions")
 @st.cache_data(show_spinner=True)
 def load_data():
     try:
-        df = pd.read_csv("data/churn_predictions_xgb.csv")
+        df = pd.read_csv("data/churn_predictions_xgb_full.csv")
+        # Rename column to match app code
+        if "churn_probability_xgb" in df.columns:
+            df.rename(columns={"churn_probability_xgb": "churn_probability"}, inplace=True)
         return df
     except FileNotFoundError:
-        st.error("CSV file not found! Make sure 'data/churn_predictions_xgb.csv' exists.")
+        st.error("CSV file not found! Make sure 'data/churn_predictions_xgb_full.csv' exists.")
         return pd.DataFrame()  # return empty df to prevent crashes
 
 df = load_data()
